@@ -37,6 +37,7 @@ struct game_state {
     unsigned time_offset;
     uint32_t saved_time;
 
+    unsigned key_buttons;
     /** Whether clicking in the top right corner acts as right mouse button
      * (e.g. for tablets). */
     bool has_right_click_emulation;

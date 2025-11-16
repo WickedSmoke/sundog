@@ -515,7 +515,7 @@ static void update_mouse_state(struct game_state *gs)
 
     int sx, sy;
     uint32_t sb      = SDL_GetMouseState(&sx, &sy);
-    unsigned buttons = 0;
+    unsigned buttons = gs->key_buttons;
     if (sb & SDL_BUTTON(SDL_BUTTON_LEFT)) {
         buttons |= 1;
     }
@@ -655,6 +655,32 @@ static void event_loop(struct game_state *gs)
                 }
                 gs->force_redraw = true;
                 break;
+            case SDLK_j:
+                if (! event.key.repeat) {
+                    gs->key_buttons |= 1;
+                    update_mouse_state(gs);
+                }
+                break;
+            case SDLK_BACKSPACE:
+                if (! event.key.repeat) {
+                    gs->key_buttons |= 2;
+                    update_mouse_state(gs);
+                }
+                break;
+            }
+            break;
+        case SDL_KEYUP:
+            if (! event.key.repeat) {
+                switch (event.key.keysym.sym) {
+                case SDLK_j:
+                    gs->key_buttons &= ~1;
+                    update_mouse_state(gs);
+                    break;
+                case SDLK_BACKSPACE:
+                    gs->key_buttons &= ~2;
+                    update_mouse_state(gs);
+                    break;
+                }
             }
             break;
         case SDL_MOUSEMOTION:
